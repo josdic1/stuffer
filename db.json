@@ -1,1 +1,22 @@
-{}
+{
+   "things": [
+      {
+         "thing": "Samsung Frame wall mount",
+         "bin": "e0g3",
+         "tags": []
+      },
+      {
+         "thing": "Hue Motion Sensor",
+         "bin": "li7e",
+         "tags": []
+      }
+   ],
+   "tags": [
+      {
+         "tag": "electronics"
+      },
+      {
+         "tag": "lighting"
+      }
+   ]
+}
