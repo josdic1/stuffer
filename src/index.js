@@ -12,6 +12,7 @@ const init = () => {
    let things = []
    let formData = {}
    let selectedThing = {}
+   let selectedId;
 
    let tags = []
    let tagFormData = {}
@@ -24,15 +25,12 @@ const init = () => {
    function renderHeader() {
       const headerHtml =
          `<div>
-            <button type="button" id="view">View</button>
             <button type="button" id="edit">Edit</button>
             <button type="button" id="del">Delete</button>
       </div>`
 
       header.innerHTML = headerHtml
 
-      document.getElementById('view')
-         .addEventListener('click', handleMenuClick)
 
       document.getElementById('edit')
          .addEventListener('click', handleMenuClick)
@@ -49,30 +47,34 @@ const init = () => {
 
    }
 
-   //utility render list
+   //render list
    function renderList(data) {
-      const headerData = Object.keys(data[0])
-         .map(header => (
-            `<th>${header}</th>`
-         ))
 
       const bodyData = data.map(item => (
-         `<tr>
-         <td><input type='checkbox' class="checkbox" id=${item.id} /></td>
-            ${Object.values(item)
-            .map(i => (
-               `<td>${i}</td>`
-            ))
-            .join('')}
+         `<tr id=${item.id}>
+             <td>
+            <input type="checkbox" id="${item.id}" name="checkbox" class="checkbox" />
+            </td>
+            <td>${item.id}</td>
+            <td>${item.thing}</td>
+            <td>${item.bin}</td>
+            <td>${item.tags.join('')}</td>
          </tr>`
       ))
+
+      const headerData =
+         `<tr>
+         <th>Select</th>
+         <th>ID</th>
+         <th>Name</th>
+         <th>Bin</th>
+         <th>Tags</th>
+         </tr>`
 
       const tableHtml =
          `<table>
             <thead>
-               <tr>
-                  ${headerData.join('')}
-               </tr>
+                  ${headerData}
             </thead>
             <tbody>
                ${bodyData.join('')}
@@ -81,16 +83,17 @@ const init = () => {
 
       list.innerHTML = tableHtml
 
-      document.querySelectorAll('.checkbox')
-         .forEach(checkbox => {
-            checkbox.addEventListener('input', handleItemCheckbox)
+      const checkboxes = document.querySelectorAll('.checkbox')
+      checkboxes.forEach(cb => (
+         cb.addEventListener('input', function (e) {
+            const { id, checked } = e.target
          })
+      ))
+
    }
 
-   function handleItemCheckbox(e) {
-      const { id, checked } = e.target
-      console.log(id, checked)
-   }
+
+
 
    //async fetch 
    async function fetchThings() {
