@@ -20,6 +20,35 @@ const init = () => {
    //init fetch
    fetchThings()
 
+   //render header
+   function renderHeader() {
+      const headerHtml =
+         `<div>
+            <button type="button" id="view">View</button>
+            <button type="button" id="edit">Edit</button>
+            <button type="button" id="del">Delete</button>
+      </div>`
+
+      header.innerHTML = headerHtml
+
+      document.getElementById('view')
+         .addEventListener('click', handleMenuClick)
+
+      document.getElementById('edit')
+         .addEventListener('click', handleMenuClick)
+
+      document.getElementById('del')
+         .addEventListener('click', handleMenuClick)
+
+
+
+   }
+
+   function handleMenuClick(e) {
+      const { id } = e.target
+
+   }
+
    //utility render list
    function renderList(data) {
       const headerData = Object.keys(data[0])
@@ -29,6 +58,7 @@ const init = () => {
 
       const bodyData = data.map(item => (
          `<tr>
+         <td><input type='checkbox' class="checkbox" id=${item.id} /></td>
             ${Object.values(item)
             .map(i => (
                `<td>${i}</td>`
@@ -36,7 +66,6 @@ const init = () => {
             .join('')}
          </tr>`
       ))
-
 
       const tableHtml =
          `<table>
@@ -52,6 +81,15 @@ const init = () => {
 
       list.innerHTML = tableHtml
 
+      document.querySelectorAll('.checkbox')
+         .forEach(checkbox => {
+            checkbox.addEventListener('input', handleItemCheckbox)
+         })
+   }
+
+   function handleItemCheckbox(e) {
+      const { id, checked } = e.target
+      console.log(id, checked)
    }
 
    //async fetch 
@@ -64,6 +102,7 @@ const init = () => {
          const data = await r.json()
          things = data
          renderList(data)
+         renderHeader()
       } catch (error) { console.error(error) }
    }
 
